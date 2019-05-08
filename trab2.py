@@ -16,22 +16,19 @@ y = df.iloc[:,0]
 
 sc = StandardScaler()  
 x = sc.fit_transform(x)
-
-# x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=0.2)
-
 clf=RandomForestClassifier(n_estimators=100)
-# clf.fit(x_train,y_train)
-# y_pred=clf.predict(x_test)
-# print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
 
+# treina o modelo com 80% dos dados, prediz o de 20% (dados teste) e cacula acurácia 
+x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=0.2)
+clf.fit(x_train,y_train)
+y_pred=clf.predict(x_test)
+print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
 
-# garante que existirão amostras de todas as classes em cada split
+# faz o kfold, treina e prediz para cada fold, retorna voto majoritario de cada predição e calcula acurácia
 kf = StratifiedKFold(n_splits=10)
-
-# retorna array com predições de classe e calcula acuracia
 y_pred = cross_val_predict(clf, x, y, cv=kf)
 print("Accuracy:",metrics.accuracy_score(y, y_pred))
 
-# retorna já os scores de acuracia de cada modelo
+# faz o mesmo processo de cima, mas calcula o score para cada fold e retorna a acuráricia média
 scores = cross_val_score(clf, x, y, cv=kf)
 print("Score:", scores.mean())
