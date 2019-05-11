@@ -24,11 +24,7 @@ clf.fit(x_train,y_train)
 y_pred=clf.predict(x_test)
 print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
 
-# faz o kfold, treina e prediz para cada fold, retorna voto majoritario de cada predição e calcula acurácia
+# faz o kfold, treina e prediz para cada fold, calcula o score e retorna um array de todos os scores.
 kf = StratifiedKFold(n_splits=10)
-y_pred = cross_val_predict(clf, x, y, cv=kf)
-print("Accuracy:",metrics.accuracy_score(y, y_pred))
-
-# faz o mesmo processo de cima, mas calcula o score para cada fold e retorna a acuráricia média
 scores = cross_val_score(clf, x, y, cv=kf)
-print("Score:", scores.mean())
+print("Score: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
